@@ -22,7 +22,7 @@ public class MyStack<T> {
 		return size;
 	}
 	public boolean isEmpty() {
-		return size ==0;
+		return size == 0;
 	}
 	public static void main(String[] args) {
 		MyStack<String> stringStack = new MyStack<String>();
