@@ -8,21 +8,33 @@ import java.util.concurrent.ThreadFactory;
 public class ExceptionThread {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 		ExecutorService service = Executors.newCachedThreadPool(new MyThreadFactory());
 		service.execute(() -> {
-			System.out.println(Thread.currentThread());
+			System.out.println(Thread.currentThread().getName());
 			throw new RuntimeException("RuntimeException");
 			});
+		ExecutorService service2 = Executors.newCachedThreadPool();
+		service2.execute(() -> {
+			System.out.println(Thread.currentThread().getName());
+			throw new RuntimeException("RuntimeException");
+		});
 	}
 
+}
+
+class DefaultExceptionHandler implements UncaughtExceptionHandler {
+	@Override
+	public void uncaughtException(Thread t, Throwable e) {
+		System.out.println("caught by DefaultExceptionHandler" + t.getName() + " throw Exception: " + e.getMessage());
+	}
 }
 
 class MyThreadExceptionHandler implements UncaughtExceptionHandler {
 	
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		System.out.println(t.getName() + " throw Exception: " + e.getMessage());
+		System.out.println("caught by MyThreadExceptionHandler" + t.getName() + " throw Exception: " + e.getMessage());
 	}
 	
 }
